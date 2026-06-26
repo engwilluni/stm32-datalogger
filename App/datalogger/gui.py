@@ -474,13 +474,15 @@ class DataloggerGUI:
 
     def _toggle_stream(self):
         current = self.stream_btn.cget("text")
-        state = "OFF" if current == "Stream ON" else "ON"
-        self._cmd("STREAM", state, cb=lambda r: self.stream_btn.configure(text=f"Stream {state}"))
+        state = current.split()[1]          # "ON" or "OFF" from the label
+        next_label = "Stream OFF" if state == "ON" else "Stream ON"
+        self._cmd("STREAM", state, cb=lambda r: self.stream_btn.configure(text=next_label))
 
     def _toggle_msc(self):
         current = self.msc_btn.cget("text")
-        state = "OFF" if current == "MSC ON" else "ON"
-        self._cmd("MSC", state, cb=lambda r: self.msc_btn.configure(text=f"MSC {state}"))
+        state = current.split()[1]          # "ON" or "OFF" from the label
+        next_label = "MSC OFF" if state == "ON" else "MSC ON"
+        self._cmd("MSC", state, cb=lambda r: self.msc_btn.configure(text=next_label))
 
     def _update_status(self, result):
         try:
