@@ -1,5 +1,12 @@
 """Desktop GUI for the STM32 datalogger."""
 
+# Bootstrap for running directly: `python gui.py` or `python datalogger/gui.py`.
+# Must come before the relative imports so Python can resolve them.
+if __name__ == "__main__" and not __package__:
+    import sys as _sys, os as _os
+    _sys.path.insert(0, _os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))))
+    __package__ = "datalogger"
+
 import tkinter as tk
 from tkinter import ttk, messagebox
 import threading
