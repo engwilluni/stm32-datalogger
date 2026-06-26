@@ -32,7 +32,7 @@ graph TB
 
         subgraph "Perifericos"
             ADC1[ADC1 CH14<br/>PC4 - Pot]
-            RTC[RTC<br/>LSI calendar]
+            RTC[RTC<br/>LSE calendar]
             GPIO_OUT[GPIO OUT<br/>PE8-PE15 LED bar]
             GPIO_IN[GPIO IN<br/>PD11-PD15 buttons<br/>PB7 user btn]
             SPI1[SPI1<br/>SD card]
@@ -100,20 +100,26 @@ sequenceDiagram
 
 | Peripheral | Pin | Função |
 |---|---|---|
-| ADC1 CH14 | PC4 | Potenciômetro |
-| RTC | — | Calendar (LSI) |
-| GPIO OUT | PE8–PE15 | LED bar |
-| GPIO IN | PD11–PD15 | BtnSelect, BtnUp, BtnRight, BtnDown, BtnLeft |
+| ADC1 CH14 | PC4 | Potenciômetro (Pot) |
+| RTC | PC14 / PC15 | LSE oscillator (OSC32_IN / OSC32_OUT) |
+| GPIO OUT | PE8–PE15 | LED bar (8 pinos) |
+| GPIO IN | PD11 | BtnSelect |
+| GPIO IN | PD12 | BtnUp |
+| GPIO IN | PD13 | BtnRight |
+| GPIO IN | PD14 | BtnDown |
+| GPIO IN | PD15 | BtnLeft |
 | GPIO IN | PB7 | BtnUser |
-| SPI1 SCK | PA5 | SD card clock |
-| SPI1 MISO | PA6 | SD card data out |
-| SPI1 MOSI | PA7 | SD card data in |
-| SPI1 CS | PB6 | SD card chip select |
+| SPI1 SCK | PA5 | SD card clock (SDCARD_CLK) |
+| SPI1 MISO | PA6 | SD card data out (SDCARD_D0) |
+| SPI1 MOSI | PA7 | SD card data in (SDCARD_CMD) |
+| SPI1 CS | PA4 | SD card chip select (SDCARD_D3) |
+| GPIO IN | PE0 | SD card detect (SDCARD_CD) |
+| USB VBUS | PA9 | USB bus power sense |
+| USB DM | PA11 | USB D- |
+| USB DP | PA12 | USB D+ |
 | SWDIO | PA13 | Debug |
 | SWCLK | PA14 | Debug |
 | SWO | PB3 | Trace |
-| USB DM | PA11 | USB D- |
-| USB DP | PA12 | USB D+ |
 
 ## Build & Flash
 
