@@ -1,0 +1,21 @@
+[project]
+name = "stm32-datalogger"
+version = "1.0.0"
+description = "PC companion app for STM32F107 datalogger"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "pyserial>=3.5",
+]
+
+[project.optional-dependencies]
+plot = ["matplotlib>=3.5"]
+test = ["pytest>=7.0"]
+
+[project.scripts]
+datalogger = "datalogger.cli:main"
+datalogger-gui = "datalogger.gui:gui_main"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"

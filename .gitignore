@@ -1,0 +1,29 @@
+# Build artifacts
+Debug/*.elf
+Debug/*.hex
+Debug/*.map
+Debug/*.list
+Debug/objects.list
+
+# Object files and dependency/analysis files
+**/*.o
+**/*.d
+**/*.su
+**/*.cyclo
+
+# IDE workspace state (not needed for reproducible builds)
+.settings/
+.claude/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.pytest_cache/
+dist/
+build/
+
+# OS
+Thumbs.db
+.DS_Store
