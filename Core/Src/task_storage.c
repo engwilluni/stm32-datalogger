@@ -471,8 +471,11 @@ void task_storage_start(void *arg) {
             board_led_write(LED_LOG, 0);
         }
 
-        /* Try re-mount if card was removed then reinserted */
-        if (!s_log_open) {
+        /* Try re-mount if card was removed then reinserted.
+           Skip while MSC is active: the host owns the sectors; re-initialising
+           the SPI card state (CMD0 inside sd_spi_init) would corrupt an
+           in-flight MSC transfer and defeat the exclusive-access guarantee. */
+        if (!s_log_open && !g_msc_enabled) {
             if (mount_and_open()) {
                 board_led_write(LED_ERR, 0);
             } else {
