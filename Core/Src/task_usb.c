@@ -89,8 +89,20 @@ void tud_msc_inquiry_cb(uint8_t lun, uint8_t vendor_id[8], uint8_t product_id[16
 }
 
 bool tud_msc_test_unit_ready_cb(uint8_t lun) {
-    (void) lun;
-    return g_msc_enabled && sd_spi_card_present();
+    bool ready = g_msc_enabled && sd_spi_card_present();
+
+    /* SCSI requires UNIT_ATTENTION (medium changed) on the first poll after the
+       media transitions from not-ready to ready, so the host discards its cached
+       "no media" state and re-reads the partition table.  Without this, Windows
+       keeps showing an empty drive even after MSC ON. */
+    static uint8_t s_prev_ready = 0;
+    if (ready && !s_prev_ready) {
+        s_prev_ready = 1;
+        tud_msc_set_sense(lun, SCSI_SENSE_UNIT_ATTENTION, 0x28, 0x00);
+        return false;   /* one UNIT_ATTENTION shot; next poll returns true */
+    }
+    if (!ready) s_prev_ready = 0;
+    return ready;
 }
 
 void tud_msc_capacity_cb(uint8_t lun, uint32_t *block_count, uint16_t *block_size) {
