@@ -1,5 +1,12 @@
 """Desktop GUI for the STM32 datalogger."""
 
+# Bootstrap for running directly: `python gui.py` or `python datalogger/gui.py`.
+# Must come before the relative imports so Python can resolve them.
+if __name__ == "__main__" and not __package__:
+    import sys as _sys, os as _os
+    _sys.path.insert(0, _os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))))
+    __package__ = "datalogger"
+
 import tkinter as tk
 from tkinter import ttk, messagebox
 import threading
@@ -467,13 +474,15 @@ class DataloggerGUI:
 
     def _toggle_stream(self):
         current = self.stream_btn.cget("text")
-        state = "OFF" if current == "Stream ON" else "ON"
-        self._cmd("STREAM", state, cb=lambda r: self.stream_btn.configure(text=f"Stream {state}"))
+        state = current.split()[1]          # "ON" or "OFF" from the label
+        next_label = "Stream OFF" if state == "ON" else "Stream ON"
+        self._cmd("STREAM", state, cb=lambda r: self.stream_btn.configure(text=next_label))
 
     def _toggle_msc(self):
         current = self.msc_btn.cget("text")
-        state = "OFF" if current == "MSC ON" else "ON"
-        self._cmd("MSC", state, cb=lambda r: self.msc_btn.configure(text=f"MSC {state}"))
+        state = current.split()[1]          # "ON" or "OFF" from the label
+        next_label = "MSC OFF" if state == "ON" else "MSC ON"
+        self._cmd("MSC", state, cb=lambda r: self.msc_btn.configure(text=next_label))
 
     def _update_status(self, result):
         try:
